@@ -1,0 +1,102 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.header {
+    background-color: v.$verde;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    @include m.tablet {
+        &.fixed {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            box-shadow: .1rem .2rem .3rem #333;
+        }
+    }
+
+    .logo {
+        flex: 0 1 auto;
+
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+    }
+
+    .contenido-header {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+
+        @include m.tablet {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .micuenta {
+        flex: 0 1 auto;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            background-color:v.$rojo_primario;
+            color: #fff;
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: v.$amarillo_primario;
+                color: #000;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+        }
+    }
+
+    h1 {
+        color: v.$blanco;
+        text-align: center;
+
+        @include m.tablet {
+            text-align: left;
+            margin: 0;
+        }
+    }
+
+    .navegacion-principal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+
+        @include m.tablet {
+            flex-direction: row;
+        }
+
+        a {
+            color: v.$blanco;
+            font-size: 2.4rem;
+
+            &:hover,
+            &.active {
+                color: v.$amarillo;
+            }
+        }
+    }
+}
+

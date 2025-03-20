@@ -1,0 +1,129 @@
+/* filepath: /home/pi/proyectos_web/santiago_conciertos/src/scss/layout/_fechaevento.scss */
+/* Contenedor principal */
+.contenido-fechaevento {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* Estilo para el mapa del estadio */
+.mapa-estadio {
+    width: 70%;
+    margin-right: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mapa-estadio img {
+    max-width: 60%;
+    height: auto;
+    max-height: 500px; /* Ajusta la altura máxima según sea necesario */
+}
+
+/* Estilo para los filtros */
+.filtros {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.filtros h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.filtros a {
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.filtros button {
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background-color: #00796b; /* Color de fondo de ejemplo */
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.filtros button:hover {
+    background-color: #004d40; /* Color de fondo de ejemplo */
+}
+
+/* Estilo para los tickets disponibles */
+.tickets-disponibles {
+    width: 25%;
+    max-height: 80vh; /* Ajusta la altura máxima según sea necesario */
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Estilo para cada ticket */
+.ticket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px; /* Reducir el padding */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+/* Estilo para la información del ticket */
+.ticket-info {
+    flex: 1;
+    margin-right: 10px;
+    padding: 5px; /* Reducir el padding */
+    background-color: #e0f7fa; /* Color de fondo de ejemplo */
+    border-radius: 5px;
+    font-size: 0.9em; /* Reducir el tamaño de la fuente */
+    line-height: 1.2; /* Reducir el espacio entre líneas */
+}
+
+.ticket-info p {
+    margin: 2px 0; /* Reducir el margen entre los párrafos */
+}
+
+/* Estilo para el formulario de compra */
+.ticket-item form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 5px; /* Reducir el padding */
+    background-color: #f1f8e9; /* Color de fondo de ejemplo */
+    border-radius: 5px;
+    font-size: 0.9em; /* Reducir el tamaño de la fuente */
+}
+
+.ticket-item form label {
+    margin-bottom: 5px;
+}
+
+.ticket-item form input {
+    margin-bottom: 5px; /* Reducir el margen inferior */
+    padding: 3px; /* Reducir el padding */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.ticket-item form button {
+    padding: 5px 10px;
+    background-color: #00796b; /* Color de fondo de ejemplo */
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.ticket-item form button:hover {
+    background-color: #004d40; /* Color de fondo de ejemplo */
+}

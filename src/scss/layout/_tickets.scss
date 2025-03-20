@@ -1,0 +1,55 @@
+.tickets-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.ticket {
+    background: #f8f9fa;
+    border: 2px dashed #ccc;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.ticket:hover {
+    transform: scale(1.05);
+}
+
+.ticket-logo {
+    display: block;
+    margin: 0 auto 10px;
+    width: 80px;
+}
+
+.ticket-separator {
+    border-bottom: 2px dashed #ccc;
+    margin: 10px 0;
+}
+
+.ticket p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.ticket p strong {
+    font-weight: bold;
+}
+
+.ticket-qrcode {
+    display: block;
+    margin: 10px auto;
+    width: 120px;
+}
+
+.ticket-id {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #888;
+}

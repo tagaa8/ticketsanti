@@ -1,0 +1,113 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use 'sass:color';
+
+.fechas-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10rem 0;
+}
+
+.fecha-item {
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    border: 1px solid v.$grisazul;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .fecha-hora {
+        background-color: v.$rojo_primario;
+        color: #fff;
+        padding: 0.5rem;
+        border-radius: 5px;
+        margin-right: 1rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .info-estadio {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        flex: 1;
+
+        p {
+            margin: 0.5rem 0;
+        }
+    }
+
+    .foto-estadio {
+        display: flex;
+        align-items: center;
+        margin-left: 1rem;
+
+        img {
+            max-height: 100px;
+            width: auto;
+            border-radius: 5px;
+            margin-right: 10rem; /* Agrega espacio a la derecha de la imagen */
+        }
+    }
+
+    .buscar-boletos {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+
+        button {
+            background-color: v.$amarillo_primario;
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-radius: 5px;
+
+            &:hover {
+                background-color: color.adjust(v.$amarillo_primario, $lightness: -10%);
+                color: #fff;
+            }
+        }
+    }
+}
+
+.evento-detalle {
+    .evento-info {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+
+        img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+            margin-right: 2rem;
+        }
+
+        .evento-descripcion {
+            flex: 1;
+
+            h2 {
+                margin-top: 0;
+            }
+        }
+    }
+}

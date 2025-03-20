@@ -1,0 +1,122 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use 'sass:color';
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: v.$rojo_primario;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        label {
+            margin-bottom: 0.5rem;
+            color: v.$grisazul;
+            font-weight: bold;
+        }
+
+        input {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border: 1px solid v.$grisazul;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+
+            &:focus {
+                border-color: v.$rojo_primario;
+                outline: none;
+            }
+        }
+
+        button {
+            background-color: v.$rojo_primario;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+
+            &:hover {
+                background-color: color.adjust(v.$rojo_primario, $lightness: -10%);
+                transform: translateY(-2px);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+    }
+
+    p {
+        text-align: center;
+        margin-top: 1rem;
+        color: v.$grisazul;
+
+        a {
+            color: v.$rojo_primario;
+            text-decoration: none;
+            font-weight: bold;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .error {
+        color: red;
+        text-align: center;
+        margin-bottom: 1rem;
+        font-weight: bold;
+    }
+
+    // Decoración exterior
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(0, 0, 255, 0.1));
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: opacity 0.3s ease;
+    }
+
+    &::before {
+        transform: rotate(5deg);
+    }
+
+    &::after {
+        transform: rotate(-5deg);
+    }
+
+    &:hover::before, &:hover::after {
+        opacity: 0.5;
+    }
+}

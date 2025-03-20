@@ -1,0 +1,68 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use 'sass:color';
+
+.eventos {
+    background-color: v.$grisazul;
+    padding: 2rem;
+
+    .eventos-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .evento {
+        background-color: #fff;
+        border: 1px solid v.$grisazul;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        h3 {
+            background-color: v.$rojo_primario;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        .evento-detalle {
+            padding: 1rem;
+            text-align: center;
+
+            button {
+                background-color: v.$amarillo_primario;
+                color: #000;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background-color 0.3s ease, color 0.3s ease;
+                border-radius: 5px;
+                margin-top: 1rem;
+
+                &:hover {
+                    background-color: color.adjust(v.$amarillo_primario, $lightness: -10%);
+                    color: #fff;
+                }
+
+                a {
+                    color: inherit;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
