@@ -912,15 +912,15 @@ body > section {
   margin: 0 auto;
   padding: 2rem;
   background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .login-container:hover {
   transform: scale(1.05);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 .login-container h2 {
   text-align: center;
@@ -942,7 +942,7 @@ body > section {
   margin-bottom: 1rem;
   padding: 0.75rem;
   border: 1px solid #E4EFE7;
-  border-radius: 10px;
+  border-radius: 5px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
 }
@@ -955,7 +955,7 @@ body > section {
   color: #fff;
   border: none;
   padding: 0.75rem;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
@@ -986,26 +986,6 @@ body > section {
   text-align: center;
   margin-bottom: 1rem;
   font-weight: bold;
-}
-.login-container::before, .login-container::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(0, 0, 255, 0.1));
-  top: 0;
-  left: 0;
-  z-index: -1;
-  transition: opacity 0.3s ease;
-}
-.login-container::before {
-  transform: rotate(5deg);
-}
-.login-container::after {
-  transform: rotate(-5deg);
-}
-.login-container:hover::before, .login-container:hover::after {
-  opacity: 0.5;
 }
 
 .register-container {
