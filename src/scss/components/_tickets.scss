@@ -1,0 +1,428 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+@use 'sass:map';
+
+// =============================================================================
+// TICKET COMPONENTS
+// =============================================================================
+
+.tickets-container {
+    @include m.contenedor('lg');
+    padding: map-get(v.$espaciado, 'xxxl') 0;
+    
+    .tickets-header {
+        text-align: center;
+        margin-bottom: map-get(v.$espaciado, 'xxxl');
+        
+        h2 {
+            @include m.responsive-text('2xl', '3xl', '4xl');
+            color: v.$gris_oscuro;
+            font-weight: map-get(v.$font-weights, 'bold');
+            margin-bottom: map-get(v.$espaciado, 'lg');
+        }
+        
+        .tickets-filter {
+            @include m.flex(row, center, center);
+            gap: map-get(v.$espaciado, 'md');
+            flex-wrap: wrap;
+            margin-bottom: map-get(v.$espaciado, 'xl');
+            
+            button {
+                @include m.button('outline', 'sm');
+                min-width: 120px;
+                
+                &.active {
+                    @include m.button('primary', 'sm');
+                }
+                
+                @include m.breakpoint('md') {
+                    @include m.button('outline', 'md');
+                    min-width: 150px;
+                    
+                    &.active {
+                        @include m.button('primary', 'md');
+                    }
+                }
+            }
+        }
+    }
+    
+    .tickets-grid {
+        @include m.grid(1, map-get(v.$espaciado, 'lg'));
+        
+        @include m.breakpoint('md') {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        @include m.breakpoint('lg') {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        @include m.breakpoint('xl') {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+    }
+    
+    .tickets-list {
+        @include m.flex(column);
+        gap: map-get(v.$espaciado, 'lg');
+    }
+}
+
+// Individual Ticket Styles
+.ticket {
+    position: relative;
+    background: linear-gradient(135deg, v.$blanco 0%, #fafafa 100%);
+    border-radius: map-get(v.$border-radius, 'xl');
+    box-shadow: map-get(v.$shadows, 'lg');
+    overflow: hidden;
+    transition: v.$transition-base;
+    border: 2px solid transparent;
+    
+    // Mobile-first: Stack vertically
+    @include m.flex(column);
+    
+    @include m.breakpoint('md') {
+        // Tablet+: Horizontal layout for list view
+        &.list-view {
+            @include m.flex(row, flex-start, stretch);
+            max-width: none;
+        }
+    }
+    
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: map-get(v.$shadows, 'xl');
+        border-color: rgba(v.$azul_primario, 0.3);
+    }
+    
+    // Ticket status variations
+    &.status-active {
+        border-left: 5px solid v.$verde_exito;
+    }
+    
+    &.status-used {
+        border-left: 5px solid v.$gris_medio;
+        opacity: 0.8;
+    }
+    
+    &.status-expired {
+        border-left: 5px solid v.$rojo_error;
+        opacity: 0.7;
+    }
+    
+    // Ticket header/logo section
+    .ticket-header {
+        @include m.flex(row, space-between, center);
+        background: v.$gradiente_principal;
+        color: v.$blanco;
+        padding: map-get(v.$espaciado, 'lg');
+        position: relative;
+        
+        .ticket-logo {
+            height: 40px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .ticket-id {
+            @include m.text-style('sm', 'bold');
+            opacity: 0.9;
+        }
+        
+        // Decorative element
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: 
+                radial-gradient(circle at 10px 10px, transparent 8px, v.$blanco 8px),
+                radial-gradient(circle at 30px 10px, transparent 8px, v.$blanco 8px),
+                radial-gradient(circle at 50px 10px, transparent 8px, v.$blanco 8px),
+                radial-gradient(circle at 70px 10px, transparent 8px, v.$blanco 8px),
+                radial-gradient(circle at 90px 10px, transparent 8px, v.$blanco 8px);
+            background-size: 20px 20px;
+            background-repeat: repeat-x;
+        }
+    }
+    
+    // Main ticket content
+    .ticket-content {
+        padding: map-get(v.$espaciado, 'xl') map-get(v.$espaciado, 'lg');
+        flex: 1;
+        
+        .ticket-event {
+            @include m.text-style('lg', 'bold');
+            color: v.$gris_oscuro;
+            margin-bottom: map-get(v.$espaciado, 'md');
+            @include m.truncate(2);
+        }
+        
+        .ticket-details {
+            @include m.flex(column);
+            gap: map-get(v.$espaciado, 'sm');
+            
+            .ticket-detail {
+                @include m.flex(row, space-between, center);
+                padding: map-get(v.$espaciado, 'sm') 0;
+                border-bottom: 1px solid v.$gris_claro;
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+                
+                .detail-label {
+                    @include m.text-style('sm', 'medium');
+                    color: v.$gris_medio;
+                    flex-shrink: 0;
+                }
+                
+                .detail-value {
+                    @include m.text-style('sm', 'semibold');
+                    color: v.$gris_oscuro;
+                    text-align: right;
+                }
+            }
+        }
+        
+        .ticket-meta {
+            @include m.flex(row, space-between, center);
+            margin-top: map-get(v.$espaciado, 'lg');
+            padding-top: map-get(v.$espaciado, 'lg');
+            border-top: 2px dashed v.$gris_claro;
+            
+            .ticket-zone {
+                @include m.flex(column, flex-start, flex-start);
+                
+                .zone-label {
+                    @include m.text-style('xs', 'medium');
+                    color: v.$gris_medio;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .zone-value {
+                    @include m.text-style('lg', 'bold');
+                    color: v.$azul_primario;
+                }
+            }
+            
+            .ticket-seat {
+                @include m.flex(column, flex-start, flex-end);
+                text-align: right;
+                
+                .seat-label {
+                    @include m.text-style('xs', 'medium');
+                    color: v.$gris_medio;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .seat-value {
+                    @include m.text-style('lg', 'bold');
+                    color: v.$verde;
+                }
+            }
+        }
+    }
+    
+    // QR Code section
+    .ticket-qr {
+        @include m.flex(column, center, center);
+        padding: map-get(v.$espaciado, 'lg');
+        background-color: v.$gris_claro;
+        border-top: 2px dashed v.$gris_medio;
+        min-width: 120px;
+        
+        @include m.breakpoint-only('xs') {
+            min-width: auto;
+            width: 100%;
+        }
+        
+        .qr-label {
+            @include m.text-style('xs', 'medium');
+            color: v.$gris_medio;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: map-get(v.$espaciado, 'sm');
+        }
+        
+        .ticket-qrcode {
+            width: 80px;
+            height: 80px;
+            border-radius: map-get(v.$border-radius, 'md');
+            box-shadow: map-get(v.$shadows, 'sm');
+            
+            @include m.breakpoint('md') {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    }
+    
+    // Status badges
+    .ticket-status {
+        position: absolute;
+        top: map-get(v.$espaciado, 'md');
+        right: map-get(v.$espaciado, 'md');
+        padding: map-get(v.$espaciado, 'xs') map-get(v.$espaciado, 'sm');
+        border-radius: map-get(v.$border-radius, 'full');
+        @include m.text-style('xs', 'bold');
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        z-index: 10;
+        
+        &.status-active {
+            background-color: v.$verde_exito;
+            color: v.$blanco;
+        }
+        
+        &.status-used {
+            background-color: v.$gris_medio;
+            color: v.$blanco;
+        }
+        
+        &.status-expired {
+            background-color: v.$rojo_error;
+            color: v.$blanco;
+        }
+    }
+    
+    // Ticket perforation effect
+    .ticket-separator {
+        position: relative;
+        height: 2px;
+        background: repeating-linear-gradient(
+            to right,
+            v.$gris_claro,
+            v.$gris_claro 5px,
+            transparent 5px,
+            transparent 10px
+        );
+        
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: v.$gris_claro;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        &::before {
+            left: -10px;
+        }
+        
+        &::after {
+            right: -10px;
+        }
+    }
+}
+
+// Loading state for tickets
+.ticket-skeleton {
+    @include m.card;
+    
+    .skeleton-line {
+        height: 16px;
+        background: linear-gradient(
+            90deg,
+            v.$gris_claro 25%,
+            lighten(v.$gris_claro, 5%) 50%,
+            v.$gris_claro 75%
+        );
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        border-radius: map-get(v.$border-radius, 'sm');
+        margin-bottom: map-get(v.$espaciado, 'sm');
+        
+        &.short {
+            width: 60%;
+        }
+        
+        &.medium {
+            width: 80%;
+        }
+        
+        &.long {
+            width: 100%;
+        }
+    }
+    
+    .skeleton-qr {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+            90deg,
+            v.$gris_claro 25%,
+            lighten(v.$gris_claro, 5%) 50%,
+            v.$gris_claro 75%
+        );
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.5s infinite;
+        border-radius: map-get(v.$border-radius, 'md');
+    }
+}
+
+// Empty state
+.tickets-empty {
+    text-align: center;
+    padding: map-get(v.$espaciado, 'xxxl');
+    color: v.$gris_medio;
+    
+    .empty-icon {
+        font-size: map-get(v.$font-sizes, '6xl');
+        margin-bottom: map-get(v.$espaciado, 'lg');
+        opacity: 0.5;
+    }
+    
+    h3 {
+        @include m.text-style('xl', 'semibold');
+        margin-bottom: map-get(v.$espaciado, 'md');
+    }
+    
+    p {
+        @include m.text-style('base', 'normal', 'relaxed');
+        margin-bottom: map-get(v.$espaciado, 'xl');
+    }
+    
+    .cta-button {
+        @include m.button('primary', 'lg');
+    }
+}
+
+// Animations
+@keyframes skeleton-loading {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+// Print styles for tickets
+@media print {
+    .ticket {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 2px solid v.$gris_oscuro;
+        
+        .ticket-header {
+            background: v.$gris_oscuro !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+    }
+    
+    .tickets-filter,
+    .tickets-header h2 {
+        display: none;
+    }
+}

@@ -1,68 +1,248 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
 @use 'sass:color';
+@use 'sass:map';
 
 .eventos {
-    background-color: v.$grisazul;
-    padding: 2rem;
+    background: linear-gradient(135deg, v.$grisazul 0%, lighten(v.$grisazul, 5%) 100%);
+    padding: map-get(v.$espaciado, 'xxxl') 0;
+    
+    @include m.contenedor('xl');
+
+    h2 {
+        @include m.responsive-text('3xl', '4xl', '5xl');
+        text-align: center;
+        color: v.$gris_oscuro;
+        margin-bottom: map-get(v.$espaciado, 'xxxl');
+        font-weight: map-get(v.$font-weights, 'bold');
+        
+        &::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: v.$gradiente_principal;
+            margin: map-get(v.$espaciado, 'lg') auto 0;
+            border-radius: map-get(v.$border-radius, 'full');
+        }
+    }
 
     .eventos-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
+        @include m.grid(3, map-get(v.$espaciado, 'xl'));
+        
+        // Mobile first responsive grid
+        grid-template-columns: 1fr;
+        
+        @include m.breakpoint('sm') {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        @include m.breakpoint('lg') {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        @include m.breakpoint('xl') {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
     }
 
     .evento {
-        background-color: #fff;
-        border: 1px solid v.$grisazul;
-        border-radius: 10px;
+        @include m.card(0, 'md');
         overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+        transition: v.$transition-base;
+        position: relative;
+        
         &:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: map-get(v.$shadows, 'xl');
         }
 
-        img {
-            width: 100%;
-            height: auto;
+        // Image container with aspect ratio
+        .evento-imagen {
+            @include m.aspect-ratio(16, 9);
+            overflow: hidden;
+            position: relative;
+            
+            img {
+                transition: transform 0.5s ease;
+            }
+            
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(
+                    180deg, 
+                    transparent 0%, 
+                    transparent 60%, 
+                    rgba(v.$negro, 0.3) 100%
+                );
+                pointer-events: none;
+            }
+        }
+        
+        &:hover .evento-imagen img {
+            transform: scale(1.1);
         }
 
         h3 {
-            background-color: v.$rojo_primario;
-            color: #fff;
-            padding: 1rem;
+            background: v.$gradiente_secundario;
+            color: v.$blanco;
+            padding: map-get(v.$espaciado, 'lg');
             text-align: center;
             margin: 0;
+            @include m.text-style('lg', 'bold');
+            text-shadow: 0 2px 4px rgba(v.$negro, 0.3);
+            position: relative;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 50px;
+                height: 3px;
+                background-color: rgba(v.$blanco, 0.3);
+                border-radius: map-get(v.$border-radius, 'full');
+            }
+        }
+
+        .evento-info {
+            padding: map-get(v.$espaciado, 'lg');
+            
+            .evento-meta {
+                @include m.flex(row, space-between, center);
+                margin-bottom: map-get(v.$espaciado, 'md');
+                
+                .evento-categoria {
+                    background-color: v.$azul_primario;
+                    color: v.$blanco;
+                    padding: map-get(v.$espaciado, 'xs') map-get(v.$espaciado, 'sm');
+                    border-radius: map-get(v.$border-radius, 'full');
+                    @include m.text-style('xs', 'medium');
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                
+                .evento-precio {
+                    @include m.text-style('sm', 'bold');
+                    color: v.$verde;
+                }
+            }
+            
+            .evento-descripcion {
+                color: v.$gris_medio;
+                @include m.text-style('sm', 'normal', 'relaxed');
+                @include m.truncate(2);
+                margin-bottom: map-get(v.$espaciado, 'lg');
+            }
         }
 
         .evento-detalle {
-            padding: 1rem;
+            padding: 0 map-get(v.$espaciado, 'lg') map-get(v.$espaciado, 'lg');
             text-align: center;
 
             button {
-                background-color: v.$amarillo_primario;
-                color: #000;
-                border: none;
-                padding: 0.75rem 1.5rem;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: background-color 0.3s ease, color 0.3s ease;
-                border-radius: 5px;
-                margin-top: 1rem;
-
-                &:hover {
-                    background-color: color.adjust(v.$amarillo_primario, $lightness: -10%);
-                    color: #fff;
+                @include m.button('secondary', 'md');
+                width: 100%;
+                position: relative;
+                overflow: hidden;
+                
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(
+                        90deg, 
+                        transparent, 
+                        rgba(v.$blanco, 0.2), 
+                        transparent
+                    );
+                    transition: left 0.5s ease;
+                }
+                
+                &:hover::before {
+                    left: 100%;
                 }
 
                 a {
                     color: inherit;
                     text-decoration: none;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
                 }
             }
         }
+
+        // Badge for featured events
+        &.featured {
+            &::before {
+                content: '⭐ Destacado';
+                position: absolute;
+                top: map-get(v.$espaciado, 'md');
+                right: map-get(v.$espaciado, 'md');
+                background: v.$gradiente_ticket;
+                color: v.$blanco;
+                padding: map-get(v.$espaciado, 'xs') map-get(v.$espaciado, 'sm');
+                border-radius: map-get(v.$border-radius, 'md');
+                @include m.text-style('xs', 'bold');
+                z-index: 10;
+                box-shadow: map-get(v.$shadows, 'sm');
+            }
+        }
+
+        // Loading state
+        &.loading {
+            .evento-imagen {
+                background: linear-gradient(
+                    90deg,
+                    v.$gris_claro 25%,
+                    lighten(v.$gris_claro, 5%) 50%,
+                    v.$gris_claro 75%
+                );
+                background-size: 200% 100%;
+                animation: loading 1.5s infinite;
+            }
+        }
+    }
+    
+    // Empty state
+    .eventos-empty {
+        text-align: center;
+        padding: map-get(v.$espaciado, 'xxxl');
+        color: v.$gris_medio;
+        
+        .empty-icon {
+            font-size: map-get(v.$font-sizes, '6xl');
+            margin-bottom: map-get(v.$espaciado, 'lg');
+            opacity: 0.5;
+        }
+        
+        h3 {
+            @include m.text-style('xl', 'semibold');
+            margin-bottom: map-get(v.$espaciado, 'md');
+        }
+        
+        p {
+            @include m.text-style('base', 'normal', 'relaxed');
+        }
+    }
+}
+
+// Loading animation
+@keyframes loading {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
     }
 }

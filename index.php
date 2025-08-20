@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Santiago Tickets - Plataforma de Tickets</title>
+    <meta name="description" content="Santiago Tickets - La mejor plataforma para comprar boletos de eventos">
     <link rel="stylesheet" href="build/css/app.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,22 +17,34 @@
     session_start();
     ?>
     <header class="header">
-        <div class="logo">
-            <a href="index.php">
-                <img src="src/img/gallery/full/logo.jpg" alt="Logo del Festival" />
-            </a>
-        </div>
+        <div class="contenedor header-contenido">
+            <div class="logo">
+                <a href="index.php">
+                    <img src="src/img/gallery/full/logo.jpg" alt="Santiago Tickets Logo" />
+                    <span class="logo-text">Santiago Tickets</span>
+                </a>
+            </div>
 
-        <div class="contenedor contenido-header">
-            <h1>Santiago Tickets</h1>
+            <nav class="nav-principal">
+                <a href="index.php" class="nav-link active">Inicio</a>
+                <a href="#eventos" class="nav-link">Eventos</a>
+                <a href="#sobre-nosotros" class="nav-link">Sobre Nosotros</a>
+            </nav>
 
-        </div>
-        <div class="micuenta">
-            <?php if (isset($_SESSION['user_id'])) { ?>
-                <a href="micuenta.php"><button>Mi Cuenta</button></a>
-            <?php } else { ?>
-                <a href="login.php"><button>Iniciar Sesión</button></a>
-            <?php } ?>
+            <div class="user-actions">
+                <?php if (isset($_SESSION['user_id'])) { ?>
+                    <a href="micuenta.php" class="btn btn-outline">Mi Cuenta</a>
+                <?php } else { ?>
+                    <a href="login.php" class="btn btn-primary">Iniciar Sesión</a>
+                    <a href="register.php" class="btn btn-outline">Registrarse</a>
+                <?php } ?>
+            </div>
+
+            <button class="menu-toggle" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
     <div class="video">
@@ -48,43 +61,99 @@
         </video>
     </div>
 
-    <div class="eventos">
-        <h2>Próximos Eventos</h2>
-        <?php
-        include 'db_connect.php';
+    <section class="eventos" id="eventos">
+        <div class="contenedor">
+            <div class="eventos-header">
+                <h2>Próximos Eventos</h2>
+                <p>Descubre los mejores eventos y consigue tus boletos</p>
+            </div>
+            
+            <?php
+            include 'db_connect.php';
 
-        $sql = "SELECT * FROM Evento";
-        $stmt = $pdo->query($sql);
+            try {
+                // Solo mostrar eventos con fechas futuras
+                $sql = "SELECT DISTINCT e.*, 
+                               COUNT(f.id_fecha) as total_fechas,
+                               MIN(f.fecha) as proxima_fecha
+                        FROM Evento e 
+                        LEFT JOIN Fecha f ON e.id_evento = f.id_evento 
+                        WHERE f.fecha >= CURDATE() OR f.fecha IS NULL
+                        GROUP BY e.id_evento 
+                        ORDER BY proxima_fecha ASC";
+                $stmt = $pdo->query($sql);
 
-        if ($stmt->rowCount() > 0) {
-            echo '<div class="eventos-grid">';
-            while ($row = $stmt->fetch()) {
-                echo '<div class="evento">';
-                echo '<img src="' . $row["foto"] . '" alt="' . $row["nombre_evento"] . '">';
-                echo '<h3>' . $row["nombre_evento"] . '</h3>';
-                echo '<div class="evento-detalle">';
-                echo '<a href="evento.php?id_evento=' . $row["id_evento"] . '"><button>Ver Evento</button></a>';
-                echo '</div>';
-                echo '</div>';
+                if ($stmt->rowCount() > 0) {
+                    echo '<div class="eventos-grid">';
+                    while ($row = $stmt->fetch()) {
+                        echo '<article class="evento-card">';
+                        echo '<div class="evento-imagen">';
+                        echo '<img src="' . htmlspecialchars($row["foto"]) . '" alt="' . htmlspecialchars($row["nombre_evento"]) . '" loading="lazy">';
+                        echo '<div class="evento-overlay">';
+                        echo '<span class="evento-categoria">' . htmlspecialchars($row["categoria"] ?? 'Evento') . '</span>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '<div class="evento-contenido">';
+                        echo '<h3 class="evento-titulo">' . htmlspecialchars($row["nombre_evento"]) . '</h3>';
+                        echo '<p class="evento-descripcion">' . htmlspecialchars(substr($row["descripcion_evento"] ?? '', 0, 100)) . '...</p>';
+                        if ($row['proxima_fecha']) {
+                            echo '<p class="evento-fecha">📅 ' . date('d/m/Y', strtotime($row['proxima_fecha'])) . '</p>';
+                        }
+                        echo '<div class="evento-acciones">';
+                        echo '<a href="evento.php?id_evento=' . $row["id_evento"] . '" class="btn btn-primary">Ver Detalles</a>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</article>';
+                    }
+                    echo '</div>';
+                } else {
+                    echo '<div class="eventos-empty">';
+                    echo '<div class="empty-icon">🎫</div>';
+                    echo '<h3>No hay eventos disponibles</h3>';
+                    echo '<p>Actualmente no tenemos eventos programados. ¡Vuelve pronto para ver nuevos eventos!</p>';
+                    echo '</div>';
+                }
+            } catch (PDOException $e) {
+                echo '<div class="error-message">Error al cargar eventos. Por favor, intenta más tarde.</div>';
+                error_log("Error en index.php: " . $e->getMessage());
             }
-            echo '</div>';
-        } else {
-            echo "No hay eventos disponibles.";
-        }
-        ?>
+            ?>
+        </div>
+    </section>
     </div>
 
-    <section class="sobre-festival">
-        <div class="imagen">
-            <picture>
-
-                <img width="300" height="200" loading="lazy" src="src/imagen_dj.jpg" alt="Sobre Festival" />
-            </picture>
-        </div>
-        <div class="contenido-festival">
-            <h2>Santi Tickets</h2>
-            <p class="fecha">Sobre Nosotros</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+    <section class="sobre-nosotros" id="sobre-nosotros">
+        <div class="contenedor">
+            <div class="sobre-nosotros-contenido">
+                <div class="sobre-imagen">
+                    <picture>
+                        <img width="500" height="400" loading="lazy" src="src/imagen_dj.jpg" alt="Sobre Santiago Tickets" />
+                    </picture>
+                </div>
+                <div class="sobre-texto">
+                    <h2>Santiago Tickets</h2>
+                    <p class="sobre-subtitulo">Tu plataforma de confianza para eventos</p>
+                    <p>Somos la plataforma líder en venta de boletos para eventos en México. Ofrecemos una experiencia segura, confiable y fácil de usar para que puedas disfrutar de los mejores eventos sin complicaciones.</p>
+                    
+                    <div class="caracteristicas">
+                        <div class="caracteristica">
+                            <div class="caracteristica-icono">🎫</div>
+                            <h4>Boletos Seguros</h4>
+                            <p>Tickets digitales con códigos QR únicos</p>
+                        </div>
+                        <div class="caracteristica">
+                            <div class="caracteristica-icono">💳</div>
+                            <h4>Pago Seguro</h4>
+                            <p>Transacciones protegidas y confiables</p>
+                        </div>
+                        <div class="caracteristica">
+                            <div class="caracteristica-icono">📱</div>
+                            <h4>Fácil de Usar</h4>
+                            <p>Interfaz moderna y responsiva</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

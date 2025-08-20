@@ -1,0 +1,507 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+@use 'sass:map';
+
+// =============================================================================
+// FORM COMPONENTS
+// =============================================================================
+
+// Login and Register containers
+.login-container,
+.register-container,
+.checkout-container {
+    min-height: 100vh;
+    @include m.flex(column, center, center);
+    background: v.$gradiente_principal;
+    padding: map-get(v.$espaciado, 'lg');
+    
+    // Form card
+    .form-card {
+        @include m.card(map-get(v.$espaciado, 'xxxl'), 'xl');
+        width: 100%;
+        max-width: 450px;
+        
+        @include m.breakpoint('md') {
+            max-width: 500px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: map-get(v.$espaciado, 'xxxl');
+            
+            .logo {
+                margin-bottom: map-get(v.$espaciado, 'lg');
+                
+                img {
+                    height: 60px;
+                    width: auto;
+                }
+            }
+            
+            h2 {
+                @include m.text-style('2xl', 'bold');
+                color: v.$gris_oscuro;
+                margin-bottom: map-get(v.$espaciado, 'sm');
+            }
+            
+            p {
+                @include m.text-style('base', 'normal');
+                color: v.$gris_medio;
+            }
+        }
+        
+        // Form groups
+        .form-group {
+            margin-bottom: map-get(v.$espaciado, 'xl');
+            
+            label {
+                display: block;
+                @include m.text-style('sm', 'semibold');
+                color: v.$gris_oscuro;
+                margin-bottom: map-get(v.$espaciado, 'sm');
+                
+                .required {
+                    color: v.$rojo_error;
+                    margin-left: map-get(v.$espaciado, 'xs');
+                }
+            }
+            
+            input,
+            select,
+            textarea {
+                @include m.input;
+                
+                &.error {
+                    border-color: v.$rojo_error;
+                    box-shadow: 0 0 0 3px rgba(v.$rojo_error, 0.1);
+                }
+                
+                &.success {
+                    border-color: v.$verde_exito;
+                    box-shadow: 0 0 0 3px rgba(v.$verde_exito, 0.1);
+                }
+            }
+            
+            textarea {
+                min-height: 100px;
+                resize: vertical;
+            }
+            
+            .input-group {
+                position: relative;
+                
+                .input-icon {
+                    position: absolute;
+                    left: map-get(v.$espaciado, 'md');
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: v.$gris_medio;
+                    pointer-events: none;
+                }
+                
+                input {
+                    padding-left: calc(#{map-get(v.$espaciado, 'md')} + 24px);
+                }
+                
+                .input-action {
+                    position: absolute;
+                    right: map-get(v.$espaciado, 'md');
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    color: v.$gris_medio;
+                    cursor: pointer;
+                    
+                    &:hover {
+                        color: v.$azul_primario;
+                    }
+                }
+            }
+            
+            .form-help {
+                @include m.text-style('xs', 'normal');
+                color: v.$gris_medio;
+                margin-top: map-get(v.$espaciado, 'sm');
+            }
+            
+            .form-error {
+                @include m.text-style('xs', 'medium');
+                color: v.$rojo_error;
+                margin-top: map-get(v.$espaciado, 'sm');
+                @include m.flex(row, flex-start, center);
+                gap: map-get(v.$espaciado, 'xs');
+                
+                .error-icon {
+                    flex-shrink: 0;
+                }
+            }
+            
+            .form-success {
+                @include m.text-style('xs', 'medium');
+                color: v.$verde_exito;
+                margin-top: map-get(v.$espaciado, 'sm');
+                @include m.flex(row, flex-start, center);
+                gap: map-get(v.$espaciado, 'xs');
+                
+                .success-icon {
+                    flex-shrink: 0;
+                }
+            }
+        }
+        
+        // Checkbox and radio groups
+        .form-check {
+            @include m.flex(row, flex-start, center);
+            gap: map-get(v.$espaciado, 'sm');
+            margin-bottom: map-get(v.$espaciado, 'lg');
+            
+            input[type="checkbox"],
+            input[type="radio"] {
+                width: auto;
+                margin: 0;
+                
+                // Custom styling
+                appearance: none;
+                width: 18px;
+                height: 18px;
+                border: 2px solid v.$gris_claro;
+                border-radius: map-get(v.$border-radius, 'sm');
+                position: relative;
+                cursor: pointer;
+                flex-shrink: 0;
+                
+                &:checked {
+                    background-color: v.$azul_primario;
+                    border-color: v.$azul_primario;
+                    
+                    &::before {
+                        content: '✓';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        color: v.$blanco;
+                        font-size: 12px;
+                        font-weight: bold;
+                    }
+                }
+                
+                &[type="radio"] {
+                    border-radius: 50%;
+                    
+                    &:checked::before {
+                        content: '';
+                        width: 8px;
+                        height: 8px;
+                        background-color: v.$blanco;
+                        border-radius: 50%;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+            
+            label {
+                margin: 0;
+                @include m.text-style('sm', 'normal');
+                cursor: pointer;
+                line-height: 1.4;
+            }
+        }
+        
+        // Form actions
+        .form-actions {
+            margin-top: map-get(v.$espaciado, 'xxxl');
+            
+            .btn-primary {
+                @include m.button('primary', 'lg');
+                width: 100%;
+                margin-bottom: map-get(v.$espaciado, 'lg');
+                
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                }
+                
+                // Loading state
+                &.loading {
+                    position: relative;
+                    color: transparent;
+                    
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 20px;
+                        height: 20px;
+                        border: 2px solid transparent;
+                        border-top: 2px solid v.$blanco;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+            
+            .btn-secondary {
+                @include m.button('outline', 'md');
+                width: 100%;
+            }
+        }
+        
+        // Form footer
+        .form-footer {
+            text-align: center;
+            margin-top: map-get(v.$espaciado, 'xl');
+            padding-top: map-get(v.$espaciado, 'xl');
+            border-top: 1px solid v.$gris_claro;
+            
+            @include m.text-style('sm', 'normal');
+            color: v.$gris_medio;
+            
+            a {
+                color: v.$azul_primario;
+                font-weight: map-get(v.$font-weights, 'semibold');
+                transition: v.$transition-base;
+                
+                &:hover {
+                    color: darken(v.$azul_primario, 10%);
+                }
+            }
+        }
+    }
+}
+
+// Checkout specific styles
+.checkout-container {
+    background: v.$gris_claro;
+    
+    .checkout-layout {
+        @include m.contenedor('lg');
+        @include m.grid(1, map-get(v.$espaciado, 'xxxl'));
+        align-items: flex-start;
+        
+        @include m.breakpoint('lg') {
+            grid-template-columns: 1fr 400px;
+        }
+        
+        .checkout-main {
+            .checkout-section {
+                @include m.card(map-get(v.$espaciado, 'xl'), 'base');
+                margin-bottom: map-get(v.$espaciado, 'xl');
+                
+                .section-header {
+                    @include m.flex(row, space-between, center);
+                    margin-bottom: map-get(v.$espaciado, 'lg');
+                    padding-bottom: map-get(v.$espaciado, 'lg');
+                    border-bottom: 2px solid v.$gris_claro;
+                    
+                    h3 {
+                        @include m.text-style('lg', 'bold');
+                        color: v.$gris_oscuro;
+                        margin: 0;
+                    }
+                    
+                    .section-step {
+                        @include m.flex(row, center, center);
+                        width: 30px;
+                        height: 30px;
+                        background-color: v.$azul_primario;
+                        color: v.$blanco;
+                        border-radius: 50%;
+                        @include m.text-style('sm', 'bold');
+                    }
+                }
+            }
+        }
+        
+        .checkout-sidebar {
+            position: sticky;
+            top: map-get(v.$espaciado, 'xl');
+            
+            .order-summary {
+                @include m.card(map-get(v.$espaciado, 'xl'), 'lg');
+                
+                h3 {
+                    @include m.text-style('lg', 'bold');
+                    margin-bottom: map-get(v.$espaciado, 'lg');
+                    color: v.$gris_oscuro;
+                }
+                
+                .summary-item {
+                    @include m.flex(row, space-between, center);
+                    padding: map-get(v.$espaciado, 'md') 0;
+                    border-bottom: 1px solid v.$gris_claro;
+                    
+                    &:last-child {
+                        border-bottom: none;
+                        font-weight: map-get(v.$font-weights, 'bold');
+                        @include m.text-style('lg');
+                        margin-top: map-get(v.$espaciado, 'md');
+                        padding-top: map-get(v.$espaciado, 'lg');
+                        border-top: 2px solid v.$gris_claro;
+                    }
+                    
+                    .item-label {
+                        color: v.$gris_medio;
+                    }
+                    
+                    .item-value {
+                        color: v.$gris_oscuro;
+                        font-weight: map-get(v.$font-weights, 'semibold');
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive form layouts
+.form-row {
+    @include m.flex(column);
+    gap: map-get(v.$espaciado, 'lg');
+    
+    @include m.breakpoint('md') {
+        @include m.flex(row);
+        
+        .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+    }
+}
+
+// Form validation states
+.form-group {
+    &.has-error {
+        input,
+        select,
+        textarea {
+            border-color: v.$rojo_error;
+            
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(v.$rojo_error, 0.1);
+            }
+        }
+    }
+    
+    &.has-success {
+        input,
+        select,
+        textarea {
+            border-color: v.$verde_exito;
+            
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(v.$verde_exito, 0.1);
+            }
+        }
+    }
+}
+
+// Credit card input styling
+.card-input-group {
+    .card-icons {
+        @include m.flex(row, flex-end, center);
+        gap: map-get(v.$espaciado, 'xs');
+        margin-bottom: map-get(v.$espaciado, 'sm');
+        
+        .card-icon {
+            width: 32px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.3;
+            transition: v.$transition-base;
+            
+            &.active {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+    }
+    
+    .card-row {
+        @include m.flex(column);
+        gap: map-get(v.$espaciado, 'md');
+        
+        @include m.breakpoint('sm') {
+            @include m.flex(row);
+        }
+        
+        .expiry-cvv {
+            @include m.flex(row);
+            gap: map-get(v.$espaciado, 'md');
+            
+            .form-group {
+                flex: 1;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+// Password strength indicator
+.password-strength {
+    margin-top: map-get(v.$espaciado, 'sm');
+    
+    .strength-bar {
+        height: 4px;
+        background-color: v.$gris_claro;
+        border-radius: map-get(v.$border-radius, 'full');
+        overflow: hidden;
+        margin-bottom: map-get(v.$espaciado, 'xs');
+        
+        .strength-fill {
+            height: 100%;
+            transition: v.$transition-base;
+            border-radius: map-get(v.$border-radius, 'full');
+            
+            &.weak {
+                width: 25%;
+                background-color: v.$rojo_error;
+            }
+            
+            &.fair {
+                width: 50%;
+                background-color: v.$amarillo_advertencia;
+            }
+            
+            &.good {
+                width: 75%;
+                background-color: v.$azul_primario;
+            }
+            
+            &.strong {
+                width: 100%;
+                background-color: v.$verde_exito;
+            }
+        }
+    }
+    
+    .strength-text {
+        @include m.text-style('xs', 'medium');
+        
+        &.weak { color: v.$rojo_error; }
+        &.fair { color: v.$amarillo_advertencia; }
+        &.good { color: v.$azul_primario; }
+        &.strong { color: v.$verde_exito; }
+    }
+}
+
+// Animations
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+// Focus styles for accessibility
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: 2px solid v.$azul_primario;
+    outline-offset: 2px;
+}

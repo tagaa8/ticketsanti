@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Cuenta</title>
+    <title>Mi Cuenta - Santiago Tickets</title>
+    <meta name="description" content="Gestiona tu cuenta y revisa tus boletos en Santiago Tickets">
     <link rel="stylesheet" href="build/css/app.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,33 +35,82 @@
     $user = $stmt->fetch();
     ?>
     <header class="header">
-        <div class="logo">
-            <a href="index.php">
-                <img src="src/img/gallery/full/logo.jpg" alt="Logo del Festival" />
-            </a>
-        </div>
+        <div class="contenedor header-contenido">
+            <div class="logo">
+                <a href="index.php">
+                    <img src="src/img/gallery/full/logo.jpg" alt="Santiago Tickets Logo" />
+                    <span class="logo-text">Santiago Tickets</span>
+                </a>
+            </div>
 
-        <div class="contenedor contenido-header">
-            <h1>Santiago Tickets</h1>
+            <nav class="nav-principal">
+                <a href="index.php" class="nav-link">Inicio</a>
+                <a href="index.php#eventos" class="nav-link">Eventos</a>
+            </nav>
 
-        </div>
-        <div class="micuenta">
-            <a href="micuenta.php"><button>Mi Cuenta</button></a>
+            <div class="user-actions">
+                <a href="micuenta.php" class="btn btn-primary">Mi Cuenta</a>
+            </div>
         </div>
     </header>
 
-    <div class="contenido-micuenta">
-        <h2>Hola, <?php echo htmlspecialchars($user['nombre_usuario']); ?></h2>
-        <form action="micuenta.php" method="POST">
-            <button type="submit" name="logout">Cerrar Sesión</button>
-        </form>
-
-        <div class="mis-boletos">
-            <h3>Mis Boletos</h3>
-            <button id="btn-pasados">Eventos Pasados</button>
-            <button id="btn-hoy">Eventos Hoy</button>
-            <button id="btn-proximos">Fechas Próximas</button>
-            <div id="tickets-container"></div>
+    <div class="micuenta-container">
+        <div class="contenedor">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="index.php">Inicio</a>
+                <span>/</span>
+                <span>Mi Cuenta</span>
+            </nav>
+            
+            <!-- Header de usuario -->
+            <div class="usuario-header">
+                <div class="usuario-info">
+                    <div class="usuario-avatar">
+                        <span><?php echo strtoupper(substr($user['nombre_usuario'], 0, 1)); ?></span>
+                    </div>
+                    <div class="usuario-detalles">
+                        <h1>Hola, <?php echo htmlspecialchars($user['nombre_usuario']); ?></h1>
+                        <p>Gestiona tu cuenta y revisa tus boletos</p>
+                    </div>
+                </div>
+                <div class="usuario-acciones">
+                    <form action="micuenta.php" method="POST" style="display: inline;">
+                        <button type="submit" name="logout" class="btn btn-outline">
+                            😪 Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Sección de boletos -->
+            <div class="tickets-container">
+                <div class="tickets-header">
+                    <h2>Mis Boletos</h2>
+                    <p>Administra todos tus boletos desde un solo lugar</p>
+                </div>
+                
+                <!-- Filtros de boletos -->
+                <div class="tickets-filter">
+                    <button id="btn-proximos" class="filter-btn active" data-type="proximos">
+                        📅 Próximos Eventos
+                    </button>
+                    <button id="btn-hoy" class="filter-btn" data-type="hoy">
+                        ⭐ Eventos Hoy
+                    </button>
+                    <button id="btn-pasados" class="filter-btn" data-type="pasados">
+                        📋 Eventos Pasados
+                    </button>
+                </div>
+                
+                <!-- Contenedor de boletos -->
+                <div id="tickets-container" class="tickets-content">
+                    <div class="loading-tickets">
+                        <div class="loading-spinner"></div>
+                        <p>Cargando tus boletos...</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

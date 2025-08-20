@@ -1,12 +1,6 @@
 // =============================================================================
-// SANTIAGO TICKETS - MAIN STYLESHEET
+// COMPONENTS INDEX
 // =============================================================================
 
-// Base styles
-@forward 'base';
-
-// Layout components
-@forward 'layout';
-
-// Component styles
-@forward 'components';
+@forward 'tickets';
+@forward 'forms';

@@ -1,64 +1,85 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
+@use 'sass:map';
 
 .header {
-    background-color: v.$verde;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-
-    @include m.tablet {
-        &.fixed {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            box-shadow: .1rem .2rem .3rem #333;
-        }
+    background: v.$gradiente_principal;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: map-get(v.$z-index, 'sticky');
+    @include m.flex-between;
+    padding: map-get(v.$espaciado, 'md');
+    box-shadow: map-get(v.$shadows, 'sm');
+    
+    // Mobile-first approach
+    flex-wrap: wrap;
+    gap: map-get(v.$espaciado, 'sm');
+    
+    @include m.breakpoint('md') {
+        flex-wrap: nowrap;
+        padding: map-get(v.$espaciado, 'lg') map-get(v.$espaciado, 'xl');
     }
 
+    // Logo section
     .logo {
-        flex: 0 1 auto;
+        flex-shrink: 0;
+        order: 1;
 
         img {
-            max-width: 200px;
-            height: auto;
+            height: 40px;
+            width: auto;
+            max-width: none;
+            
+            @include m.breakpoint('md') {
+                height: 50px;
+            }
+            
+            @include m.breakpoint('lg') {
+                height: 60px;
+            }
         }
     }
 
+    // Main content area
     .contenido-header {
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
+        order: 3;
+        width: 100%;
+        text-align: center;
+        padding: map-get(v.$espaciado, 'sm') 0;
+        
+        @include m.breakpoint('md') {
+            order: 2;
+            flex: 1;
+            width: auto;
+            padding: 0 map-get(v.$espaciado, 'lg');
+        }
 
-        @include m.tablet {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        h1 {
+            color: v.$blanco;
+            margin: 0;
+            @include m.responsive-text('xl', '2xl', '3xl');
+            font-weight: map-get(v.$font-weights, 'bold');
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
     }
 
+    // Account section
     .micuenta {
-        flex: 0 1 auto;
-        display: flex;
-        justify-content: flex-end;
+        flex-shrink: 0;
+        order: 2;
+        
+        @include m.breakpoint('md') {
+            order: 3;
+        }
 
         button {
-            background-color:v.$rojo_primario;
-            color: #fff;
-            border: none;
-            padding: 1.5rem 3rem;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            border-radius: 5px;
-
-            &:hover {
-                background-color: v.$amarillo_primario;
-                color: #000;
+            @include m.button('primary', 'sm');
+            white-space: nowrap;
+            box-shadow: map-get(v.$shadows, 'sm');
+            
+            @include m.breakpoint('md') {
+                @include m.button('primary', 'md');
             }
 
             a {
@@ -68,35 +89,108 @@
         }
     }
 
-    h1 {
-        color: v.$blanco;
-        text-align: center;
-
-        @include m.tablet {
-            text-align: left;
-            margin: 0;
-        }
-    }
-
+    // Navigation (if exists)
     .navegacion-principal {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-
-        @include m.tablet {
-            flex-direction: row;
+        order: 4;
+        width: 100%;
+        @include m.flex(column, center, center);
+        gap: map-get(v.$espaciado, 'sm');
+        margin-top: map-get(v.$espaciado, 'sm');
+        
+        @include m.breakpoint('md') {
+            @include m.flex(row, center, center);
+            width: auto;
+            margin-top: 0;
+            margin-left: map-get(v.$espaciado, 'lg');
         }
 
         a {
             color: v.$blanco;
-            font-size: 2.4rem;
+            @include m.text-style('sm', 'medium');
+            padding: map-get(v.$espaciado, 'sm') map-get(v.$espaciado, 'md');
+            border-radius: map-get(v.$border-radius, 'md');
+            transition: v.$transition-base;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            
+            @include m.breakpoint('md') {
+                @include m.text-style('base', 'medium');
+            }
 
             &:hover,
             &.active {
+                background-color: rgba(v.$blanco, 0.1);
                 color: v.$amarillo;
+                transform: translateY(-1px);
             }
         }
+    }
+
+    // Mobile menu toggle (for future implementation)
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: v.$blanco;
+        font-size: map-get(v.$font-sizes, '2xl');
+        cursor: pointer;
+        padding: map-get(v.$espaciado, 'sm');
+        
+        @include m.breakpoint-only('xs') {
+            display: block;
+        }
+        
+        @include m.breakpoint-only('sm') {
+            display: block;
+        }
+    }
+}
+
+// Mobile navigation overlay (for future implementation)
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(v.$negro, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: map-get(v.$z-index, 'modal');
+    padding: map-get(v.$espaciado, 'xxxl') map-get(v.$espaciado, 'xl');
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    
+    &.active {
+        transform: translateX(0);
+    }
+    
+    .nav-links {
+        @include m.resetear-lista;
+        @include m.flex(column, flex-start, stretch);
+        gap: map-get(v.$espaciado, 'lg');
+        
+        a {
+            color: v.$blanco;
+            @include m.text-style('xl', 'medium');
+            padding: map-get(v.$espaciado, 'lg');
+            border-bottom: 1px solid rgba(v.$blanco, 0.1);
+            transition: v.$transition-base;
+            
+            &:hover {
+                color: v.$amarillo;
+                padding-left: map-get(v.$espaciado, 'xl');
+            }
+        }
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: map-get(v.$espaciado, 'xl');
+        right: map-get(v.$espaciado, 'xl');
+        background: none;
+        border: none;
+        color: v.$blanco;
+        font-size: map-get(v.$font-sizes, '3xl');
+        cursor: pointer;
     }
 }
 
